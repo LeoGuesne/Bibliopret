@@ -1,5 +1,5 @@
 // 1. Renseigne ces deux valeurs (Supabase > Project Settings > API)
-const SUPABASE_URL='https://VOTRE-PROJET.supabase.co',SUPABASE_KEY='VOTRE_CLE_ANON';
+const SUPABASE_URL='https://ampsxovfcmobrixmydyh.supabase.co',SUPABASE_KEY='sb_publishable_8aY14_8zZ0ASUaDEquKGXw_TtsAe9tQ';
 
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=s=>document.querySelector(s);
