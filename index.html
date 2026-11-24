@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#14231c"><title>Biblio entre amis</title>
+<style>
+:root{color-scheme:light dark;--bg:#e8eee9;--sf:#fbfcfa;--ink:#14231c;--mut:#5f6f66;--st:#2f46c9;--sts:#dde2fa;--am:#c27a1c;--ok:#2e7d57;--ln:#cfd8d1}
+@media(prefers-color-scheme:dark){:root{--bg:#101a15;--sf:#18251e;--ink:#e6efe9;--mut:#93a69b;--st:#8fa0ff;--sts:#242c55;--am:#e2a24a;--ok:#5cc08b;--ln:#2a3a31}}
+*{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 system-ui,sans-serif}
+#app{display:flex;flex-direction:column;height:100%;max-width:480px;margin:0 auto;padding-top:env(safe-area-inset-top)}
+main{flex:1;overflow:auto;padding:18px 16px 24px}
+h1{font:700 27px/1.15 "Iowan Old Style",Georgia,serif;margin:0 0 4px}h2{font:700 18px Georgia,serif;margin:22px 0 10px}
+.sub{color:var(--mut);margin:0 0 14px}button{font:inherit;color:inherit;cursor:pointer}
+.btn{background:var(--st);color:var(--bg);border:0;border-radius:10px;padding:11px 16px;font-weight:600;width:100%;margin-top:8px}
+.btn.alt{background:transparent;color:var(--st);border:1.5px solid var(--st)}.btn.sm{width:auto;padding:7px 12px;margin:0;font-size:14px}
+input{width:100%;font:inherit;padding:11px 14px;border-radius:10px;border:1px solid var(--ln);background:var(--sf);color:var(--ink);margin-bottom:8px}
+.tabs{display:flex;border-top:1px solid var(--ln);background:var(--sf);padding-bottom:env(safe-area-inset-bottom)}
+.tab{flex:1;background:none;border:0;padding:9px 0 8px;color:var(--mut);font-size:12px;display:flex;flex-direction:column;align-items:center}
+.tab b{font-size:20px;font-weight:400}.tab.on{color:var(--st);font-weight:700}
+.chips{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto}.chip{border:1px solid var(--ln);background:var(--sf);border-radius:20px;padding:6px 14px;white-space:nowrap}
+.chip.on{background:var(--ink);color:var(--bg)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 12px}
+.tile{background:none;border:0;padding:0;text-align:left;position:relative}.tile small{display:block;margin-top:6px;font-weight:600;line-height:1.25}
+.tile em{display:block;color:var(--mut);font-style:normal;font-size:12px}
+.cv{position:relative;aspect-ratio:2/3;border-radius:3px 7px 7px 3px;padding:8px;display:flex;align-items:flex-end;color:#fff;font:700 12px/1.2 Georgia,serif;background:linear-gradient(160deg,hsl(var(--h) 45% 40%),hsl(var(--h) 50% 26%));box-shadow:0 2px 5px rgba(0,0,0,.25);overflow:hidden}
+.cv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.cv.sm{width:46px;flex:none;font-size:7px;padding:4px}
+.stamp{position:absolute;top:34%;left:-4px;right:-4px;transform:rotate(-8deg);text-align:center;border:2px solid var(--st);color:var(--st);background:color-mix(in srgb,var(--sf) 88%,transparent);font-weight:800;font-size:11px;padding:2px 4px;border-radius:4px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:4px 14px;margin-bottom:12px}
+.row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--ln);width:100%;background:none;border-width:0 0 1px;text-align:left}
+.row:last-child{border:0}.row .t{flex:1;min-width:0}.row .t b{display:block}.row .t span{color:var(--mut);font-size:13px}
+.link{background:var(--sts);border-radius:10px;padding:10px 12px;margin:10px 0;color:var(--st);font-weight:600;word-break:break-all}
+.view{position:relative;background:#0e1512;border-radius:14px;height:220px;overflow:hidden;margin-bottom:8px}.view video{width:100%;height:100%;object-fit:cover}
+.view i{position:absolute;left:12%;right:12%;top:50%;height:2px;background:#ff5a4d;box-shadow:0 0 12px #ff5a4d}
+.back{background:none;border:0;color:var(--st);font-weight:600;padding:0 0 10px}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;z-index:20}
+.sheet>div{background:var(--sf);width:100%;max-width:480px;border-radius:18px 18px 0 0;padding:20px 16px calc(16px + env(safe-area-inset-bottom))}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:24px;opacity:0;transition:.25s;pointer-events:none;z-index:30;font-weight:600}
+#toast.on{opacity:1}.empty{color:var(--mut);text-align:center;padding:22px 10px}.ok{color:var(--ok);font-weight:700}.am{color:var(--am);font-weight:700}
+</style></head>
+<body><div id="app"><main id="m"></main><nav class="tabs" id="nav"></nav></div><div id="toast" role="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js"></script>
+<script src="app.js"></script></body></html>
